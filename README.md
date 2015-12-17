@@ -1,7 +1,10 @@
 # dbd-modules
 SQL logging and document root lookup for apache mod_dbd
 
+This repo was forked from http://sourceforge.net/p/dbd-modules/
+
 Description
+
 Two Apache HTTPD Web Server modules which work with mod_dbd to access a database:
 
 1.) mod_log_dbd
