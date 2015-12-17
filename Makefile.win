@@ -1,0 +1,49 @@
+!IF "$(APR)" != ""
+APACHE=$(APR)
+!ENDIF
+!IF "$(APACHE)" == ""
+!MESSAGE
+!MESSAGE You must specify APACHE=Apache_directory 
+!MESSAGE    where Apache_directory is an Apache 2.2+ top-level directory
+!MESSAGE
+!ERROR APACHE= must be specified
+!ENDIF 
+
+!IF "$(DEBUG)" == ""
+CFLAGS=/nologo /c /MD /W3 /O2 /Ob2 /Zi /I "$(APACHE)\include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "APU_DECLARE_EXPORT"
+LINK_FLAGS=/nologo /dll /release /debug /incremental:no /machine:I386 /libpath:"$(APACHE)\lib" 
+!ELSE
+CFLAGS=/nologo /c /MDd /W3 /Od /Zi /I "$(APACHE)\include" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "APU_DECLARE_EXPORT"
+LINK_FLAGS=/nologo /dll /debug /incremental:no /machine:I386 /libpath:"$(APACHE)\lib" 
+!ENDIF
+
+all : mod_vhost_dbd.so mod_log_dbd.so
+
+mod_vhost_dbd.obj : mod_vhost_dbd.c
+    CL $(CFLAGS) $?
+
+mod_dbd_vhost.res : mod_dbd_vhost.rc
+    RC $?
+
+mod_vhost_dbd.so : mod_vhost_dbd.obj mod_vhost_dbd.res
+    LINK $(LINK_FLAGS) mod_vhost_dbd.obj mod_vhost_dbd.res /pdb:mod_vhost_dbd.pdb /out:$@ libhttpd.lib libapr-1.lib libaprutil-1.lib kernel32.lib 
+    @IF EXIST $@.manifest MT -manifest $@.manifest -outputresource:$@;2
+
+mod_log_dbd.obj : mod_log_dbd.c
+    CL $(CFLAGS) $?
+
+mod_dbd_vhost.res : mod_dbd_vhost.rc
+    RC $?
+
+mod_log_dbd.so : mod_log_dbd.obj mod_log_dbd.res
+    LINK $(LINK_FLAGS) mod_log_dbd.obj mod_log_dbd.res /pdb:mod_log_dbd.pdb /out:$@ libhttpd.lib libapr-1.lib libaprutil-1.lib kernel32.lib 
+    @IF EXIST $@.manifest MT -manifest $@.manifest -outputresource:$@;2
+
+clean :
+    DEL *.pdb *.manifest *.so *.obj *.exp *.lib *.idb *.res
+    
+install : all
+    COPY /Y mod_vhost_dbd.so $(APACHE)\modules
+    COPY /Y mod_vhost_dbd.pdb $(APACHE)\modules
+    COPY /Y mod_log_dbd.so $(APACHE)\modules
+    COPY /Y mod_log_dbd.pdb $(APACHE)\modules
