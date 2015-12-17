@@ -1,16 +1,21 @@
-# dbd-modules
+dbd-modules
+===========
 SQL logging and document root lookup for apache mod_dbd
 
-This repo was forked from http://sourceforge.net/p/dbd-modules/
+*This repo was forked from http://sourceforge.net/p/dbd-modules/*
+
+-
 
 Description
-
+-----------
 Two Apache HTTPD Web Server modules which work with mod_dbd to access a database:
 
-1.) mod_log_dbd
+###mod_log_dbd
 Log web requests to an SQL database
 
-2.) mod_vhost_dbd: 
+###mod_vhost_dbd: 
 Override the document root directory from an SQL database
+
+-
 
 Please see the Wiki pages for instructions.
