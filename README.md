@@ -17,7 +17,7 @@ Log web requests to an SQL database
 Override the document root directory from an SQL database
 
 ###mod_variables_dbd
-*ToDo*
+*ToDo*  
 Set server variables stored in a database depending on host name.
 
 -
