@@ -16,10 +16,6 @@ Log web requests to an SQL database
 ###mod_vhost_dbd: 
 Override the document root directory from an SQL database
 
-###mod_variables_dbd
-*ToDo*  
-Set server variables stored in a database depending on host name.
-
 -
 
 Please see the Wiki pages for instructions.
